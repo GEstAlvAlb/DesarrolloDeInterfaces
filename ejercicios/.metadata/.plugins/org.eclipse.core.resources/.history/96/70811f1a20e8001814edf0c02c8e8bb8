@@ -1,0 +1,89 @@
+
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+//Cada vez que cambie el estado del millasTxt el programa debe recalcular 
+//los kilometros y escribir la salida en kilometrosTxt
+
+//DocumentListener es una interfaz usada para campos de texto
+//e implementa 3 métodos que están incorporados más abajo 
+public class ventana40 extends JFrame implements DocumentListener {
+
+	JLabel millasLbl = new JLabel("Millas");
+	JLabel kilometrosLbl = new JLabel("Kilometros");
+
+	JTextField millasTxt = new JTextField(15);
+	JTextField kilometrosTxt = new JTextField("Esperando entrada");
+
+	public ventana40() {
+		super("Conversor millas - kilometros");
+
+		GridLayout grid = new GridLayout(2, 2);
+		this.setLayout(grid);
+
+		this.add(millasLbl);
+		this.add(kilometrosLbl);
+
+		this.add(millasTxt);
+		this.add(kilometrosTxt);
+
+		// Añadimos los doc listeners a los JTextFields
+		millasTxt.getDocument().addDocumentListener(this);
+
+		// El campo kilometros no es editable
+		kilometrosTxt.setEditable(false);
+
+		this.pack();
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public static void main(String[] args) {
+		new ventana40();
+	}
+
+	////////////////////////// DocumentListener métodos
+	////////////////////////// /////////////////////////////////////////////
+	// Metodos que implementa la interfaz DocumentListener
+	// para poder detectar los distintos tipos de eventos
+	// tratados por la interfaz DocumentListener.
+
+	// Se dispara cuando insertamos un nuevo caracter
+	@Override
+	public void insertUpdate(DocumentEvent evento) {
+		// Como hay un solo JTextField que dispara
+		// eventos no es necesario detectar qué campo los provoca
+		// cuando haya más de uno utilizaremos un if de la siguiente forma
+		// if(evento.getDocument() == millasTxt.getDocument())
+
+		// Controlamos que el texto del campo NO este vacío
+		// con el signo de admiración se niega la premisa
+		if (!millasTxt.getText().isEmpty()) {
+			float millas = Float.parseFloat(millasTxt.getText());
+			float kilometros = 1.60934f * millas;
+
+			kilometrosTxt.setText(Float.toString(kilometros));
+		}
+
+	}
+
+	// Se dispara cuando borramos algún caracter
+	@Override
+	public void removeUpdate(DocumentEvent evento) {
+		float millas = Float.parseFloat(millasTxt.getText());
+		float kilometros = 1.60934f * millas;
+
+		kilometrosTxt.setText(Float.toString(kilometros));
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}

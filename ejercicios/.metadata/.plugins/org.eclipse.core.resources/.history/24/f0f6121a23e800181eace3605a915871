@@ -1,0 +1,124 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+
+public class ventana41 extends JFrame implements ActionListener {
+
+	// Dependiendo del radio que elija el usuario
+	// deberá aparecer la imagen correspondiente
+
+	// Label donde pondremos la imagen
+	JLabel imagenLbl = new JLabel();
+
+	// Radio
+	JRadioButton htmlButton = new JRadioButton("HTML5");
+	JRadioButton cssButton = new JRadioButton("CSS3");
+	JRadioButton jsButton = new JRadioButton("JavaScript");
+	JRadioButton nodeButton = new JRadioButton("NodeJS");
+
+	// Agrupamos los radio de forma lógica
+	// es decir no ocupan un lugar dentro de la interfaz
+	// porque no es un componente gráfico
+	ButtonGroup radioGrupo = new ButtonGroup();
+
+	// Creamos un JPanel donde poner los radio
+	JPanel radioPanel = new JPanel(new GridLayout(4, 1));
+
+	public ventana41() {
+		super("Tecnologías web");
+
+		// No hace falta ponerlo ya que por defecto al frame
+		// siempre se le asigna un BorderLayout por defecto
+		// this.setLayout(new BorderLayout());
+
+		// por defecto estará seleccionado el primer radio
+		htmlButton.setSelected(true);
+
+		// setIcon es un método que sirve para establecer imagenes en el label
+		// como parametro de entrada requiere de un objeto ImageIcon
+		// que a su vez necesita una ruta donde le indicamos donde se almacena la imagen
+		// la ruta es relativa a la raíz del proyecto.
+		ImageIcon imagen = new ImageIcon("assets/html5.png");
+		imagenLbl.setIcon(imagen);
+
+		// Asociamos los disparadores de eventos con nuestros radio buttons
+		htmlButton.addActionListener(this);
+		cssButton.addActionListener(this);
+		jsButton.addActionListener(this);
+		nodeButton.addActionListener(this);
+
+		// asociamos todos los radios
+		// de esta forma solo puede ser seleccionado uno cada vez
+		radioGrupo.add(htmlButton);
+		radioGrupo.add(cssButton);
+		radioGrupo.add(jsButton);
+		radioGrupo.add(nodeButton);
+
+		// El panel lleva por defecto un layout que apila a los elementos que vayamos
+		// añadiendo
+		// Añadimos los radios al panel
+		// El ButtonGroup no se añade al panel porque su función es la de agrupar
+		// a los RadioButtons para poder seleccionar uno cada vez
+		radioPanel.add(htmlButton);
+		radioPanel.add(cssButton);
+		radioPanel.add(jsButton);
+		radioPanel.add(nodeButton);
+
+		// Creamos un padding de 10px alrededor del panel
+		Border padding = new EmptyBorder(10, 10, 10, 10);
+		radioPanel.setBorder(padding);
+
+		// Por último, añadimos el panel en la parte izquierda
+		// y la imagen en el centro del frame
+		this.add(radioPanel, BorderLayout.WEST);
+		this.add(imagenLbl, BorderLayout.CENTER);
+
+		this.pack();
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public static void main(String[] argumentos) {
+		new ventana41();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evento) {
+		// el método getSource nos devuelve el objeto responsable de la acción del
+		// evento
+		if (evento.getSource() == htmlButton) {
+			// Objeto anónimo new ImageIcon("assets/html5.png")
+			// porque su representación memoria no tiene un identificador como por ejemplo
+			// sí lo tiene al principio del programa ImageIcon imagen = new
+			// ImageIcon("ruta/imagen.png");
+			// de tal forma que podemos usar el identificador imagen para operar con él en
+			// distintos puntos del código
+			imagenLbl.setIcon(new ImageIcon("assets/html5.png"));
+		}
+
+		if (evento.getSource() == cssButton) {
+			imagenLbl.setIcon(new ImageIcon("assets/css3.png"));
+		}
+
+		if (evento.getSource() == jsButton) {
+			imagenLbl.setIcon(new ImageIcon("assets/js.png"));
+		}
+
+		if (evento.getSource() == nodeButton) {
+			imagenLbl.setIcon(new ImageIcon("assets/node.png"));
+		}
+	}
+}
